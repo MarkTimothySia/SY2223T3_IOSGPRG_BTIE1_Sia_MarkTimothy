@@ -1,93 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Pipes;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Swipe : MonoBehaviour
 {
-    [SerializeField] List<Sprite> Arrows;
     [SerializeField] TextMeshProUGUI SwipeInputText;
 
-    private bool OnPress = false;
+    private int minSwipeDistance = 50;
+
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
 
-    private Vector2 mouseStartPos;
-    private Vector2 mouseEndPos;
+    private int swipeDirection = 0;
+    Vector2 swipeDelta = Vector2.zero;
+
 
     private void Update()
-    { 
-        // Not sure why does not work, time to Yeet
-        for (int i = 0; i < Input.touchCount; ++i)
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) 
         {
-            // Records touch
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetMouseButtonDown(0) )
-            {
-                startTouchPosition = Input.GetTouch(0).position;
-                mouseStartPos = Input.mousePosition; 
-                OnPress = true;
-
-            }
-
-            if ( (OnPress || Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) )
-            {
-                endTouchPosition = Input.GetTouch(0).position;
-                mouseEndPos = Input.mousePosition;
-
-                if (endTouchPosition.x < startTouchPosition.x || mouseEndPos.x < mouseStartPos.x)
-                {
-                    // Left swipe 
-                    LeftSwipe();
-                }
-
-
-                if (endTouchPosition.x > startTouchPosition.x || mouseEndPos.x > mouseStartPos.x) 
-                {
-                    // Right Swipe
-                    RightSwipe();
-                }
-
-
-                if (endTouchPosition.y < startTouchPosition.y || mouseEndPos.y < mouseStartPos.y) 
-                {
-                    // Up swipe
-                    UpSwipe();
-                }
-
-
-                if (endTouchPosition.y > startTouchPosition.y || mouseEndPos.y > mouseStartPos.y)
-                {
-                    // Down Swipe
-                    DownSwipe();
-                }
-
-            } 
+            Touch touch = Input.GetTouch(0);
+            startTouchPosition = touch.position;
         }
 
-        void RightSwipe()
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            Debug.Log("Swipe Right");
+            Touch touch = Input.GetTouch(0);
+            endTouchPosition = touch.position;
+
+
+            checkSwipe();
+        }
+
+    }
+
+    void checkSwipe() // 1 R, 2 L, 3 U, 4 D
+    {
+        
+        bool checkLeft = PointOnLeft(startTouchPosition,endTouchPosition,swipeDelta);
+
+
+        if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft) 
+        {
             SwipeInputText.text = "Swipe Right";
+            swipeDirection = 1;
 
         }
-
-        void LeftSwipe()
+        else if ((startTouchPosition.x > endTouchPosition.x) &&  checkLeft)
         {
-            Debug.Log("Swipe Left");
             SwipeInputText.text = "Swipe Left";
+
+            swipeDirection = 2;
         }
 
-        void UpSwipe()
+        else if ((startTouchPosition.y < endTouchPosition.y) )
         {
-            Debug.Log("Swipe Up");
             SwipeInputText.text = "Swipe Up";
+
+            swipeDirection = 3;
+        }
+        else if ((startTouchPosition.y > endTouchPosition.y))
+        {
+            SwipeInputText.text = "Swipe Down";
+
+            swipeDirection = 4;
         }
 
-        void DownSwipe()
-        {
-            Debug.Log("Swipe Down");
-            SwipeInputText.text = "Swipe Down";
-        }
+    }
+    private bool PointOnLeft(Vector2 point1, Vector2 point2, Vector2 point3)
+    {
+        return (point2.x - point1.x) * (point3.y - point1.y) - (point2.y - point1.y) * (point3.x - point1.x) > 0;
     }
 }

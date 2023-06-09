@@ -10,12 +10,10 @@ public class Swipe : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI SwipeInputText;
 
-    private int minSwipeDistance = 50;
-
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
 
-    private int swipeDirection = 0;
+    public int swipeDirection = 0; // 1 Right, 2 Left, 3 Up, 4 Down
     Vector2 swipeDelta = Vector2.zero;
 
 
@@ -33,31 +31,36 @@ public class Swipe : MonoBehaviour
             endTouchPosition = touch.position;
 
 
-            checkSwipe();
+            CheckSwipe();
         }
 
     }
 
-    void checkSwipe() // 1 R, 2 L, 3 U, 4 D
+    void CheckSwipe() // 1 R, 2 L, 3 U, 4 D, 5 Tap
     {
         
         bool checkLeft = PointOnLeft(startTouchPosition,endTouchPosition,swipeDelta);
 
+        if ((startTouchPosition.x + endTouchPosition.x < 40 && startTouchPosition.x - endTouchPosition.x > 0) && (startTouchPosition.y + endTouchPosition.y < 40 && startTouchPosition.y - endTouchPosition.y > 0))
+        {
+            SwipeInputText.text = "Tap";
+            swipeDirection = 5;
+        }
 
-        if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft) 
+        else if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft)
         {
             SwipeInputText.text = "Swipe Right";
             swipeDirection = 1;
 
         }
-        else if ((startTouchPosition.x > endTouchPosition.x) &&  checkLeft)
+        else if ((startTouchPosition.x > endTouchPosition.x) && checkLeft)
         {
             SwipeInputText.text = "Swipe Left";
 
             swipeDirection = 2;
         }
 
-        else if ((startTouchPosition.y < endTouchPosition.y) )
+        else if ((startTouchPosition.y < endTouchPosition.y))
         {
             SwipeInputText.text = "Swipe Up";
 

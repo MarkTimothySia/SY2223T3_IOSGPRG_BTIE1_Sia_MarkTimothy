@@ -1,28 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] float spawnTimer;
     [SerializeField] GameObject EnemyPrefab;
+    [SerializeField] GameObject Player;
     [SerializeField] Transform SpawnerPos;
+    [SerializeField] Swipe SwipeManager;
+    private float SpeedMulti = 1.0f;
+    private float Multiplier = 0.5f;
 
-    // Since no max here
+    private int CurrentTotalEnemies;
 
-    // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnTick());
+        StartCoroutine(C_SpawnTick());
+
+        EnemyPrefab.GetComponent<EnemyScript>().SetSwipeManager(SwipeManager);
+        EnemyPrefab.GetComponent<EnemyScript>().SetPlayer(Player);
     }
 
-
-    IEnumerator SpawnTick()
+    IEnumerator C_SpawnTick()
     {
-        yield return new WaitForSeconds(spawnTimer); // wait first then start again
+        // wait first then start again
+        yield return new WaitForSeconds(spawnTimer);
 
         Instantiate(EnemyPrefab, SpawnerPos);
 
-        StartCoroutine(SpawnTick());
+        CurrentTotalEnemies++;
+
+        if (CurrentTotalEnemies < 5)
+        {
+            StartCoroutine (C_SpawnTick());
+        }
+        else
+        {
+            // Not sure if this works
+            yield return new WaitForSeconds(spawnTimer);
+            StartCoroutine(C_SpawnTick());
+        }
     }
+
+    IEnumerator C_SpeedMultiTick()
+    {
+        yield return new WaitForSeconds(1);
+        SpeedMulti = SpeedMulti + Multiplier;
+
+        // Hope this works increase speed
+        EnemyPrefab.GetComponent<EnemyScript>().SetSpeedMultiplier(SpeedMulti);
+    }
+
 }

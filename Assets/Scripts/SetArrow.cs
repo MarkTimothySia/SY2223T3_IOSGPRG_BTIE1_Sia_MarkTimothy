@@ -9,20 +9,22 @@ public class SetArrow : MonoBehaviour
 
     Color red = Color.red;
     Color green = Color.green;
+    Color yellow = Color.yellow;
 
     public int setArrowToInput;
     public int RNGArrowChoice;
-
+    private int PlayerInput;
     private bool isReverse;
 
 
     void Start()
     {
         this.GetComponent<SpriteRenderer>().sprite = null;
-        deployArrow();
+        DeployArrow();
+        CheckInRangeArrow(Enemy.GetComponent<EnemyScript>().inRange);
     }
 
-    void deployArrow()
+    void DeployArrow()
     {
         // RNG if normal, Reverse, Moving, moving Reverse
 
@@ -39,7 +41,6 @@ public class SetArrow : MonoBehaviour
         {
             case 0:
                 // Normal
-
                 this.GetComponent<SpriteRenderer>().sprite = ArrowSprites[setArrowToInput];
                 break;
 
@@ -54,39 +55,58 @@ public class SetArrow : MonoBehaviour
             case 2:
                 // Moving
 
-                checkInRangeArrow(Enemy.GetComponent<EnemyScript>().inRange);
+                this.GetComponent<SpriteRenderer>().color = yellow;
                 break;
 
             case 3:
-                // Reverse + Moving
+                // Reverse + Moving, not sure if will work 2 colors
 
                 isReverse = true;
-                this.GetComponent<SpriteRenderer>().color = red;
-                checkInRangeArrow(Enemy.GetComponent<EnemyScript>().inRange);
+                this.GetComponent<SpriteRenderer>().color = red + yellow;
                 break;
         }
 
     }
 
-    void checkInRangeArrow(bool offRange)
+
+    public void GetPlayerInput(int input)
     {
-        if (offRange)
+        PlayerInput = input;
+    }
+
+    private void LateUpdate()
+    {
+        CheckInRangeArrow(Enemy.GetComponent<EnemyScript>().inRange);
+
+        if (PlayerInput == setArrowToInput)
         {
-            StartCoroutine(SpinArrow());
-        }
-        else
-        {
-            this.GetComponent<SpriteRenderer>().sprite = ArrowSprites[setArrowToInput];
+            Destroy(Enemy);
         }
     }
 
-    IEnumerator SpinArrow()
-    {
-        int randomArrow = Random.Range(1, 4);
-        this.GetComponent<SpriteRenderer>().sprite = ArrowSprites[randomArrow];
-  
-        yield return new WaitForSeconds(1);
 
-        StartCoroutine(SpinArrow());
+    void CheckInRangeArrow(bool inRange)
+    {
+        if (inRange)
+        {
+            this.GetComponent<SpriteRenderer>().sprite = ArrowSprites[setArrowToInput];
+        }
+        else
+        {
+            this.StartCoroutine(SpinArrow(inRange));
+        }
+    }
+
+    // They spin all arrows and not stop
+
+    IEnumerator SpinArrow(bool inRange)
+    {
+        if (!inRange)
+        {
+            int randomArrow = Random.Range(1, 4);
+            this.GetComponent<SpriteRenderer>().sprite = ArrowSprites[randomArrow];
+
+            yield return new WaitForSeconds(1);
+        }
     }
 }

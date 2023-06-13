@@ -34,7 +34,9 @@ public class EnemyScript : MonoBehaviour
 
     private void LateUpdate()
     {
-        rb.AddForce(- transform.up * ( movementSpeed * speedMultiplier ) * Time.deltaTime);
+        // rb.AddForce(- transform.up * ( movementSpeed * speedMultiplier ) * Time.deltaTime);
+        transform.Translate(Vector2.down * Time.deltaTime);
+
     }
 
 
@@ -43,7 +45,7 @@ public class EnemyScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            UnityEngine.Debug.Log("Enemy touching?");
+            Debug.Log("Enemy touching?");
             collision.gameObject.GetComponent<PlayerScript>().TakeDamage();
             KillEnemy();
         }
@@ -52,16 +54,13 @@ public class EnemyScript : MonoBehaviour
 
     // Not sure why does not work, to turn off in SetArrow
 
-    private void OnTriggerStay2D(Collider2D RangeCircle)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        RangeCircle = TriggerRangeCircle;
+        PlayerScript playerScript = collision.GetComponent<PlayerScript>();
 
-        if (RangeCircle.gameObject.tag == "Player")
+        if (playerScript != null)
         {
             inRange = true;
-
-
-            UnityEngine.Debug.Log("In Range");
         }
 
     }

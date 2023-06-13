@@ -3,45 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField] int currentHp;
-
+    Collider2D EnemyTracker;
     protected bool isInvinsible = false;
     protected bool isAlive = true;
     Rigidbody2D playerRigidbody;
     TextMeshProUGUI hpText;
 
+    // public GameObject[] Enemies;
+    private List<GameObject> enemies;
+    private int totalEnemies;
 
     // Add abilities here
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // When player gets hit, HP - 1
+        EnemyScript enemyScript = collision.gameObject.GetComponent<EnemyScript>();
 
-        if (collision.gameObject.tag == "Enemy") 
+        if (enemyScript != null)
         {
-
-            UnityEngine.Debug.Log("Enemy touched");
             TakeDamage();
-
-            collision.gameObject.GetComponent<EnemyScript>().KillEnemy();
+            enemyScript.KillEnemy();
+            enemies.Remove(enemyScript.gameObject);
         }
     }
 
+    public void AddEnemyToList(GameObject enemy)
+    {
+        enemies.Add(enemy);
+    }
 
     public void TakeDamage()
     {
 
-        if (currentHp > 0 && !isInvinsible) 
+        if (currentHp > 0 && !isInvinsible)
         {
             currentHp--;
             hpText.text = currentHp.ToString();
         }
-        else if(currentHp <= 0 && !isInvinsible)
+        else if (currentHp <= 0 && !isInvinsible)
         {
             currentHp = 0;
 
@@ -53,7 +59,7 @@ public class PlayerScript : MonoBehaviour
     }
 
     // Can call anytime, sadly cannot use since I can't kill enemies
-   public void OnInvincibilityMode()
+    public void OnInvincibilityMode()
     {
         StartCoroutine(C_EnableInvincibility());
     }
@@ -70,4 +76,12 @@ public class PlayerScript : MonoBehaviour
         isInvinsible = false;
     }
 
+    /* public void Attack(SwipeDirection swipeDirection)
+    {
+        // check the swipe direction for the first enemy in enemy list
+        if (enemies[0].swipeDirection == swipeDirection)
+        {
+            // kill enemy
+        }
+    }*/
 }

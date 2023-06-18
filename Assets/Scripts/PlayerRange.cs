@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerRange : MonoBehaviour
 {
 
-    [SerializeField] private PlayerScript player;
+    [SerializeField] GameObject player;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,7 +13,7 @@ public class PlayerRange : MonoBehaviour
 
         if (enemyScript != null)
         {
-            player.AddEnemyToList(collision.gameObject);
+            player.GetComponent<PlayerScript>().AddEnemyToList(collision.gameObject);
         }
     }
 }

@@ -28,7 +28,7 @@ public class SetArrow : MonoBehaviour
     {
         // RNG if normal, Reverse, Moving, moving Reverse
 
-        setArrowToInput = Random.Range(1, 4);
+        setArrowToInput = Random.Range(0, 3);
 
         RNGArrowChoice = Random.Range(0, 3);
 
@@ -68,10 +68,29 @@ public class SetArrow : MonoBehaviour
 
     }
 
-
-    public void GetPlayerInput(int input)
+    public SwipeDirection GetArrowToBeInput()
     {
-        PlayerInput = input;
+        SwipeDirection PlacedSwipeDirection = new SwipeDirection();
+
+        // 1 Right, 2 Left, 3 Up, 4 Down
+
+        switch (setArrowToInput)
+        {
+            case 0:
+                PlacedSwipeDirection = SwipeDirection.Right;
+                break;
+            case 1:
+                PlacedSwipeDirection = SwipeDirection.Left;
+                break;
+            case 2:
+                PlacedSwipeDirection = SwipeDirection.Up;
+                break;
+            case 3:
+                PlacedSwipeDirection = SwipeDirection.Down;
+                break;
+        }
+
+        return PlacedSwipeDirection;
     }
 
     private void LateUpdate()

@@ -18,12 +18,13 @@ public enum SwipeDirection
 public class Swipe : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI SwipeInputText;
+    [SerializeField] GameObject Player;
 
     private Vector2 startTouchPosition;
     private Vector2 endTouchPosition;
 
-    public int swipeDirection = 0; // 1 Right, 2 Left, 3 Up, 4 Down
-    public SwipeDirection swipeDirection2;
+    // public int swipeDirection = 0; // 1 Right, 2 Left, 3 Up, 4 Down
+    public SwipeDirection swipeDirection;
     Vector2 swipeDelta = Vector2.zero;
 
 
@@ -51,40 +52,35 @@ public class Swipe : MonoBehaviour
         
         bool checkLeft = PointOnLeft(startTouchPosition,endTouchPosition,swipeDelta);
 
-        if ((startTouchPosition.x + endTouchPosition.x < 40 && startTouchPosition.x - endTouchPosition.x > 0) && (startTouchPosition.y + endTouchPosition.y < 40 && startTouchPosition.y - endTouchPosition.y > 0))
-        {
-            SwipeInputText.text = "Tap";
-            swipeDirection = 5;
-            swipeDirection2 = SwipeDirection.Tap;
-        }
-
-        else if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft)
+        if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft)
         {
             SwipeInputText.text = "Swipe Right";
-            swipeDirection = 1;
-            // player.Attack(SwipeDirection.Right)
-
+            Player.GetComponent<PlayerScript>().Attack(SwipeDirection.Right);
         }
+
         else if ((startTouchPosition.x > endTouchPosition.x) && checkLeft)
         {
             SwipeInputText.text = "Swipe Left";
-
-            swipeDirection = 2;
+            Player.GetComponent<PlayerScript>().Attack(SwipeDirection.Left);
         }
 
         else if ((startTouchPosition.y < endTouchPosition.y))
         {
             SwipeInputText.text = "Swipe Up";
-
-            swipeDirection = 3;
+            Player.GetComponent<PlayerScript>().Attack(SwipeDirection.Up);
         }
+
         else if ((startTouchPosition.y > endTouchPosition.y))
         {
-            SwipeInputText.text = "Swipe Down";
-
-            swipeDirection = 4;
+            SwipeInputText.text = "Swipe Down"; 
+            Player.GetComponent<PlayerScript>().Attack(SwipeDirection.Down);
         }
 
+        else if ((startTouchPosition.x + endTouchPosition.x < 40 && startTouchPosition.x - endTouchPosition.x > 0) && (startTouchPosition.y + endTouchPosition.y < 40 && startTouchPosition.y - endTouchPosition.y > 0))
+        {
+            SwipeInputText.text = "Tap";
+            Player.GetComponent<PlayerScript>().Attack(SwipeDirection.Tap);
+        }
     }
     private bool PointOnLeft(Vector2 point1, Vector2 point2, Vector2 point3)
     {

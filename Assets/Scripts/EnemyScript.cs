@@ -29,7 +29,7 @@ public class EnemyScript : MonoBehaviour
 
     private void Update()
     {
-        Script.GetPlayerInput(playerInput);
+        // Script.GetPlayerInput(playerInput);
     }
 
     private void LateUpdate()

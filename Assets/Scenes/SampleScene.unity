@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SwipeInputText: {fileID: 588089302}
+  Player: {fileID: 0}
   swipeDirection: 0
-  swipeDirection2: 0
 --- !u!4 &56275704
 Transform:
   m_ObjectHideFlags: 0
@@ -906,8 +906,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455403719}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.2011, y: 3.8552, z: 0}
-  m_LocalScale: {x: 5.781005, y: 5.6181607, z: 1}
+  m_LocalPosition: {x: -2.2011, y: 5.7312, z: 0}
+  m_LocalScale: {x: 5.781005, y: 9.369968, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 515158733}
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87087ada72b17c247b14fe6da5f3da1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 515158730}
 --- !u!1001 &488172738578589571
 PrefabInstance:
   m_ObjectHideFlags: 0

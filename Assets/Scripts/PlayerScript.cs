@@ -55,7 +55,6 @@ public class PlayerScript : MonoBehaviour
             SceneManager.LoadScene(0);
 
         }
-
     }
 
     // Can call anytime, sadly cannot use since I can't kill enemies
@@ -76,12 +75,17 @@ public class PlayerScript : MonoBehaviour
         isInvinsible = false;
     }
 
-    /* public void Attack(SwipeDirection swipeDirection)
+    public void Attack(SwipeDirection swipeDirection)
     {
-        // check the swipe direction for the first enemy in enemy list
-        if (enemies[0].swipeDirection == swipeDirection)
+        //// check the swipe direction for the first enemy in enemy list
+        //if (enemies[0].swipeDirection == swipeDirection)
+        //{
+        //    // kill enemy
+        //}
+
+        if (enemies[0].GetComponent<SetArrow>().GetArrowToBeInput() == swipeDirection)
         {
-            // kill enemy
+            enemies[0].GetComponent<EnemyScript>().KillEnemy();
         }
-    }*/
+    }
 }

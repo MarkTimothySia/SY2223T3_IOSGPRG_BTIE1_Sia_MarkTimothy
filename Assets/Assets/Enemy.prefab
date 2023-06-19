@@ -210,7 +210,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!114 &3079743137297198942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +228,7 @@ MonoBehaviour:
   speedMultiplier: 1
   Script: {fileID: 5767667356812465539}
   TriggerRangeCircle: {fileID: 4559476563543092435}
+  enemyTimer: 10
   inRange: 0
 --- !u!61 &3079743137297198938
 BoxCollider2D:
@@ -358,6 +359,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1822f4da95341b04bb24cdca414c59d0, type: 3}
   - {fileID: 21300000, guid: 8296adf8fb3caee4c86cf4320176558e, type: 3}
   Enemy: {fileID: 3079743137297198881}
+  swipeDirection: 0
   setArrowToInput: 0
   RNGArrowChoice: 0
-  isInRange: 0

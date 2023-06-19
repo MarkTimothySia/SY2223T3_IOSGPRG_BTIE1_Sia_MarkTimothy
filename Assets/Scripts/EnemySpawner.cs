@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] float spawnTimer;
     [SerializeField] GameObject EnemyPrefab;
+    [SerializeField] GameObject PowerUpPrefab;
     [SerializeField] GameObject Player;
     [SerializeField] Transform SpawnerPos;
     [SerializeField] Swipe SwipeManager;
@@ -41,23 +42,31 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator C_SpawnTick()
     {
+        int ToSpawn = Random.Range(0,1);
+
+
         // wait first then start again
         yield return new WaitForSeconds(spawnTimer);
 
-        Instantiate(EnemyPrefab, SpawnerPos);
-
-        CurrentTotalEnemies++;
-
-        if (CurrentTotalEnemies < 5)
+        if (ToSpawn == 0)
         {
-            StartCoroutine (C_SpawnTick());
+            Instantiate(EnemyPrefab, SpawnerPos);
+
+            CurrentTotalEnemies++;
+
+            if (CurrentTotalEnemies < 5)
+            {
+                StartCoroutine(C_SpawnTick());
+            }
         }
-        else
+        else if (ToSpawn == 1)
         {
-            // Not sure if this works
-            yield return new WaitForSeconds(spawnTimer);
-            StartCoroutine(C_SpawnTick());
+            Instantiate(PowerUpPrefab, SpawnerPos);
         }
+
+         // Not sure if this works
+         yield return new WaitForSeconds(spawnTimer);
+         StartCoroutine(C_SpawnTick());
     }
 
     IEnumerator C_SpeedMultiTick()

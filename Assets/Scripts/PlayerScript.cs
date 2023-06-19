@@ -56,7 +56,7 @@ public class PlayerScript : MonoBehaviour
 
         if (currentHp > 0 && !isInvinsible)
         {
-            currentHp--;
+            currentHp = currentHp - 1;
             hpText.text = currentHp.ToString();
         }
         else if (currentHp <= 0 && !isInvinsible)
@@ -68,7 +68,6 @@ public class PlayerScript : MonoBehaviour
 
         }
     }
-
 
     IEnumerator C_AddSpeed()
     {
@@ -104,6 +103,11 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(C_EnableInvincibility());
     }
 
+    public void PlayerHealing()
+    {
+        currentHp += 1;
+    }
+
     IEnumerator C_EnableInvincibility()
     {
         UnityEngine.Debug.Log("Player Invincible");
@@ -115,8 +119,4 @@ public class PlayerScript : MonoBehaviour
         UnityEngine.Debug.Log("Player not Invincible");
         isInvinsible = false;
     }
-
-
-
-
 }

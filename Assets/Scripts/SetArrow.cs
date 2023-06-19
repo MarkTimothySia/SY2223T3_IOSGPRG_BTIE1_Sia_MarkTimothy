@@ -6,6 +6,7 @@ public class SetArrow : MonoBehaviour
 {
     [SerializeField] Sprite[] ArrowSprites;
     [SerializeField] GameObject Enemy;
+    [SerializeField] SwipeDirection swipeDirection;
 
     Color red = Color.red;
     Color green = Color.green;
@@ -70,27 +71,27 @@ public class SetArrow : MonoBehaviour
 
     public SwipeDirection GetArrowToBeInput()
     {
-        SwipeDirection PlacedSwipeDirection = new SwipeDirection();
+        // SwipeDirection PlacedSwipeDirection = new SwipeDirection();
 
         // 1 Right, 2 Left, 3 Up, 4 Down
 
         switch (setArrowToInput)
         {
             case 0:
-                PlacedSwipeDirection = SwipeDirection.Right;
+                swipeDirection = SwipeDirection.Right;
                 break;
             case 1:
-                PlacedSwipeDirection = SwipeDirection.Left;
+                swipeDirection = SwipeDirection.Left;
                 break;
             case 2:
-                PlacedSwipeDirection = SwipeDirection.Up;
+                swipeDirection = SwipeDirection.Up;
                 break;
             case 3:
-                PlacedSwipeDirection = SwipeDirection.Down;
+                swipeDirection = SwipeDirection.Down;
                 break;
         }
 
-        return PlacedSwipeDirection;
+        return swipeDirection;
     }
 
     private void LateUpdate()

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject Player;
     [SerializeField] Transform SpawnerPos;
     [SerializeField] Swipe SwipeManager;
+    [SerializeField] TextMeshProUGUI EnemySpeedText;
+
+
     private float SpeedMulti = 1.0f;
     private float Multiplier = 0.5f;
 
@@ -22,6 +27,17 @@ public class EnemySpawner : MonoBehaviour
         EnemyPrefab.GetComponent<EnemyScript>().SetSwipeManager(SwipeManager);
         EnemyPrefab.GetComponent<EnemyScript>().SetPlayer(Player);
     }
+
+    private void LateUpdate()
+    {
+        EnemySpeedText.text = "Enemy Speed: " + SpeedMulti.ToString();
+    }
+
+    public void AddSpeed()
+    {
+        Multiplier +=  0.5f;
+    }
+
 
     IEnumerator C_SpawnTick()
     {

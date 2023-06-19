@@ -24,7 +24,7 @@ public class Swipe : MonoBehaviour
     private Vector2 endTouchPosition;
 
     // public int swipeDirection = 0; // 1 Right, 2 Left, 3 Up, 4 Down
-    public SwipeDirection swipeDirection;
+    // public SwipeDirection swipeDirection;
     Vector2 swipeDelta = Vector2.zero;
 
 
@@ -41,7 +41,6 @@ public class Swipe : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             endTouchPosition = touch.position;
 
-
             CheckSwipe();
         }
 
@@ -49,7 +48,6 @@ public class Swipe : MonoBehaviour
 
     void CheckSwipe() // 1 R, 2 L, 3 U, 4 D, 5 Tap
     {
-        
         bool checkLeft = PointOnLeft(startTouchPosition,endTouchPosition,swipeDelta);
 
         if ((startTouchPosition.x < endTouchPosition.x) && !checkLeft)
